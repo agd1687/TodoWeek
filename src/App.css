@@ -1,38 +1,84 @@
-.App {
+body{
+  display: flex;
+  justify-content: center;
+}
+
+#root{
+  width: 100%;
+}
+
+h1{
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.todo{
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: 1em;
+}
+
+.todo-list{
+  border-style: solid;
+  border-color: gray;
+  padding: 2px;
+  width: 20%;
+}
+
+.todo-list:nth-child(n+2) {
+  border-left: 0px;
+}
+
+.todo-list h3{
+  text-align: center;
+  margin: 5px;
+}
+
+.todo-list p{
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 10px;
+  font-size: 0.5em;
+  color:gray;
+  font-weight: bold;
+}
+
+.todo-item{
+  display: flex;
+  border-style: solid;
+  border-color: grey;
+  border-width: 1px;
+  height: 18px;
+  margin: 2px;
+}
+
+.todo-item-input{
+  width: 100%;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-content: center;
+}
+
+.todo-item-input [type="text"]{
+  width: 100%;
+  font-size: xx-small;
+  border-width: 0px;
+  height: 15px;
+  align-self: center;
+}
+
+.todo-item-input [type="checkbox"]{
+  align-self: center;
+}
+
+.task-done{
+  background-color: lightgray;
   color: white;
+  text-decoration-line: line-through;
+}
+.todo-item-menu{
+  display: flex;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.todo-item-menu button{
+  padding: 1px;
+  background-color: white;
 }
