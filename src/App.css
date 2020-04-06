@@ -11,6 +11,10 @@ h1{
   text-align: center;
 }
 
+.total-task{
+  text-align: center;
+}
+
 .todo{
   display: flex;
   margin: 1em;

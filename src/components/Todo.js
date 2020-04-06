@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import {useSelector, useDispatch} from 'react-redux'
 import TodoList from './TodoList';
+import {ActionTypes} from '../redux/Types'
+import {createTask, deleteTask, moveTask, toggleTask} from '../redux/ActionCreator';
 
 export default function Todo() {
 
-    const [dayTasks, setDayTask] = useState({ monday: [], tuesday: [], wednesday: [], thursday: [], friday: [] });
     const [focusedTask, setFocusedTask] = useState({ day: "monday", index: 0, flag:false });
     const [firstDayTaskUpdate, setFirstDayTaskUpdate] = useState(false);
+    const dispatch = useDispatch();
+    const dayTasks = useSelector((store) => store);
     
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem("todoweek"));
-        data && setDayTask(data);
+        data && dispatch({type: ActionTypes.LOAD_DATA, payload:{data}});
         data && setFirstDayTaskUpdate(true);
     }, []);
 
@@ -23,7 +27,7 @@ export default function Todo() {
 
     const handleChange = (e, day, index) => {
         setFocusedTask({ day: day, index: index, flag:!focusedTask.flag});
-        setDayTask({ ...dayTasks, [day]: [...dayTasks[day].slice(0, index), { task: e.target.value, done: false }, ...dayTasks[day].slice(index + 1)] });
+        dispatch(createTask(day, index, e.target.value));
     }
 
     const handleKeyPress = (e, day, index) => {
@@ -33,20 +37,14 @@ export default function Todo() {
     }
 
     const handleCheck = (e, day, index) => {
-        setDayTask({ ...dayTasks, [day]: [...dayTasks[day].slice(0, index), { ...dayTasks[day][index], done: e.target.checked }, ...dayTasks[day].slice(index + 1)] });
+        dispatch(toggleTask(day, index, e.target.checked));
     }
 
     const handleChangeTaskPosition = (day, index, type) => {
-        if (type === "arrowUp" && index > 0) {
-            setDayTask({ ...dayTasks, [day]: [...dayTasks[day].slice(0, index - 1), dayTasks[day][index], dayTasks[day][index - 1], ...dayTasks[day].slice(index + 1)] });
-        } else if (type === "arrowDown" && index + 1 < dayTasks[day].length) {
-            setDayTask({ ...dayTasks, [day]: [...dayTasks[day].slice(0, index), dayTasks[day][index + 1], dayTasks[day][index], ...dayTasks[day].slice(index + 2)] });
-        }
+        dispatch(moveTask(day, index, type));
     }
     const handleTaskDelete = (day, index) => {
-        // Other Option >>> setDayTask({ ...dayTasks, [day]: [...dayTasks[day].slice(0, index), ...dayTasks[day].slice(index + 1)] });
-        const taskArrayUpdated = dayTasks[day].filter((task, indexTask) => indexTask !== index);
-        setDayTask({ ...dayTasks, [day]:taskArrayUpdated });
+        dispatch(deleteTask(day, index));
     }
 
     const handleOnClickTodoList = (day) => {
